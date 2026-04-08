@@ -37,8 +37,14 @@ export default function HeroSection({
   onAddToCart,
 }: Props) {
   const currentBall = ballVariants[currentIndex];
-  const leftLetters = useMemo(() => currentBall.left.split(""), [currentBall.left]);
-  const rightLetters = useMemo(() => currentBall.right.split(""), [currentBall.right]);
+  const leftLetters = useMemo(
+    () => currentBall.left.split(""),
+    [currentBall.left],
+  );
+  const rightLetters = useMemo(
+    () => currentBall.right.split(""),
+    [currentBall.right],
+  );
 
   const leftTextRef = useRef<HTMLSpanElement>(null);
   const rightTextRef = useRef<HTMLSpanElement>(null);
@@ -143,12 +149,18 @@ export default function HeroSection({
         },
         "<",
       )
-      .set([leftTextRef.current, rightTextRef.current], { x: xIn, filter: "blur(8px)" })
+      .set([leftTextRef.current, rightTextRef.current], {
+        x: xIn,
+        filter: "blur(8px)",
+      })
       .set(ballContainerRef.current, {
         scale: 0.84,
         rotate: dir === "right" ? 10 : -10,
       })
-      .set([priceRef.current, labelRef.current], { x: xIn * 0.5, filter: "blur(6px)" })
+      .set([priceRef.current, labelRef.current], {
+        x: xIn * 0.5,
+        filter: "blur(6px)",
+      })
       .to([leftTextRef.current, rightTextRef.current], {
         opacity: 1,
         x: 0,
@@ -181,7 +193,6 @@ export default function HeroSection({
       );
   }, [currentIndex]);
 
-
   const handlePrev = () => {
     directionRef.current = "left";
     setCurrentIndex((prev) =>
@@ -199,7 +210,10 @@ export default function HeroSection({
   return (
     <section className="relative flex flex-1 flex-col overflow-hidden">
       {/* Promotion video */}
-      <div ref={promoRef} className="mt-3 flex items-center gap-2 sm:mt-4 sm:gap-3">
+      <div
+        ref={promoRef}
+        className="mt-3 flex items-center gap-2 sm:mt-4 sm:gap-3"
+      >
         <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[#94A3B8] sm:h-10 sm:w-10">
           <span className="text-white text-xs">▶</span>
         </div>
@@ -220,7 +234,10 @@ export default function HeroSection({
             style={{ width: "126px", height: "126px" }}
           >
             <div className="h-[126px] w-[126px] -translate-y-1">
-              <CanvasWrapper accent={currentBall.accent} animationTrigger={currentIndex} />
+              <CanvasWrapper
+                accent={currentBall.accent}
+                animationTrigger={currentIndex}
+              />
             </div>
           </div>
 
@@ -231,7 +248,10 @@ export default function HeroSection({
               style={{ fontSize: "84px" }}
             >
               {leftLetters.map((letter, index) => (
-                <span key={`mobile-left-${index}`} className="hero-letter inline-block">
+                <span
+                  key={`mobile-left-${index}`}
+                  className="hero-letter inline-block"
+                >
                   {letter}
                 </span>
               ))}
@@ -242,7 +262,10 @@ export default function HeroSection({
               style={{ fontSize: "84px" }}
             >
               {rightLetters.map((letter, index) => (
-                <span key={`mobile-right-${index}`} className="hero-letter inline-block">
+                <span
+                  key={`mobile-right-${index}`}
+                  className="hero-letter inline-block"
+                >
                   {letter}
                 </span>
               ))}
@@ -258,7 +281,10 @@ export default function HeroSection({
             style={{ fontSize: "clamp(54px, 14.2vw, 220px)" }}
           >
             {leftLetters.map((letter, index) => (
-              <span key={`desktop-left-${index}`} className="hero-letter inline-block">
+              <span
+                key={`desktop-left-${index}`}
+                className="hero-letter inline-block"
+              >
                 {letter}
               </span>
             ))}
@@ -270,7 +296,10 @@ export default function HeroSection({
             style={{ fontSize: "clamp(54px, 14.2vw, 220px)" }}
           >
             {rightLetters.map((letter, index) => (
-              <span key={`desktop-right-${index}`} className="hero-letter inline-block">
+              <span
+                key={`desktop-right-${index}`}
+                className="hero-letter inline-block"
+              >
                 {letter}
               </span>
             ))}
@@ -285,7 +314,10 @@ export default function HeroSection({
             height: "clamp(140px, 19.2vw, 320px)",
           }}
         >
-          <CanvasWrapper accent={currentBall.accent} animationTrigger={currentIndex} />
+          <CanvasWrapper
+            accent={currentBall.accent}
+            animationTrigger={currentIndex}
+          />
         </div>
       </div>
 
@@ -306,7 +338,10 @@ export default function HeroSection({
           >
             {currentBall.label}
           </p>
-          <div ref={paginationRef} className="absolute right-0 top-[-110px] flex flex-col items-center gap-4">
+          <div
+            ref={paginationRef}
+            className="absolute right-0 top-[-110px] flex flex-col items-center gap-4"
+          >
             <span
               className="text-[11px] leading-none transition-colors duration-500"
               style={{
@@ -333,7 +368,12 @@ export default function HeroSection({
           </div>
           <div ref={ctaWrapRef} className="mt-8 w-full">
             <button
-              onClick={onAddToCart}
+              onClick={() => {
+                const audio = new Audio("/click.m4a");
+                audio.volume = 0.5; // chỉnh âm lượng nếu cần
+                audio.play();
+                onAddToCart();
+              }}
               className="w-full rounded-[8px] px-8 py-4 text-[15px] font-bold uppercase tracking-[0.18em] text-white transition-all duration-300 active:scale-95"
               style={{
                 backgroundColor: currentBall.accent,
@@ -361,10 +401,15 @@ export default function HeroSection({
             >
               {currentBall.label}
             </p>
-            <p className="mt-4 text-[11px] uppercase tracking-[0.12em] text-[#555]">En</p>
+            <p className="mt-4 text-[11px] uppercase tracking-[0.12em] text-[#555]">
+              En
+            </p>
           </div>
 
-          <div ref={ctaWrapRef} className="order-3 hidden self-center sm:block md:absolute md:bottom-1 md:left-1/2 md:-translate-x-1/2">
+          <div
+            ref={ctaWrapRef}
+            className="order-3 hidden self-center sm:block md:absolute md:bottom-1 md:left-1/2 md:-translate-x-1/2"
+          >
             <button
               onClick={onAddToCart}
               className="rounded-[8px] px-10 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-white transition-all duration-300 hover:scale-105 active:scale-95 sm:px-12 sm:py-3.5 sm:text-[14px] md:px-14 md:py-4 md:text-[15px]"
@@ -383,7 +428,10 @@ export default function HeroSection({
             </button>
           </div>
 
-          <div ref={paginationRef} className="order-2 hidden items-center gap-3 self-start sm:flex sm:gap-4 md:order-none md:gap-5 md:self-end">
+          <div
+            ref={paginationRef}
+            className="order-2 hidden items-center gap-3 self-start sm:flex sm:gap-4 md:order-none md:gap-5 md:self-end"
+          >
             <span
               className="text-[12px] leading-none transition-colors duration-500"
               style={{
