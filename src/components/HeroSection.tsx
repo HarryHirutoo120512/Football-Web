@@ -56,6 +56,16 @@ export default function HeroSection({
   const paginationRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
   const directionRef = useRef<"left" | "right">("right");
+  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
+
+  const handleAddToCartWithSound = () => {
+    if (clickSoundRef.current) {
+      clickSoundRef.current.currentTime = 0;
+      clickSoundRef.current.volume = 1;
+      clickSoundRef.current.play().catch((err) => console.log(err));
+    }
+    onAddToCart();
+  };
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -367,13 +377,10 @@ export default function HeroSection({
             </button>
           </div>
           <div ref={ctaWrapRef} className="mt-8 w-full">
+            <audio ref={clickSoundRef} src="/applepay.mp3" preload="auto" />
+
             <button
-              onClick={() => {
-                const audio = new Audio("/click.m4a");
-                audio.volume = 0.5; // chỉnh âm lượng nếu cần
-                audio.play();
-                onAddToCart();
-              }}
+              onClick={handleAddToCartWithSound}
               className="w-full rounded-[8px] px-8 py-4 text-[15px] font-bold uppercase tracking-[0.18em] text-white transition-all duration-300 active:scale-95"
               style={{
                 backgroundColor: currentBall.accent,
@@ -411,7 +418,7 @@ export default function HeroSection({
             className="order-3 hidden self-center sm:block md:absolute md:bottom-1 md:left-1/2 md:-translate-x-1/2"
           >
             <button
-              onClick={onAddToCart}
+              onClick={handleAddToCartWithSound}
               className="rounded-[8px] px-10 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-white transition-all duration-300 hover:scale-105 active:scale-95 sm:px-12 sm:py-3.5 sm:text-[14px] md:px-14 md:py-4 md:text-[15px]"
               style={{
                 backgroundColor: currentBall.accent,
